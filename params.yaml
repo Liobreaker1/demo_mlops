@@ -1,0 +1,4 @@
+data:
+  filepath: /Users/rich/Documents/mlops_clase/demo_mlops/data/raw/WineQT.csv
+  processed: data/processed
+  models: models/
