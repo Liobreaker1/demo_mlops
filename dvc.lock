@@ -1,0 +1,90 @@
+schema: '2.0'
+stages:
+  load_data:
+    cmd: poetry run python src/load_data.py /Users/rich/Documents/mlops_clase/demo_mlops/data/raw/WineQT.csv
+      data/processedtrain_test_data.csv
+    deps:
+    - path: data/raw/WineQT.csv
+      hash: md5
+      md5: e2e57e4c41e6ee0213fb12e5a70f4bfb
+      size: 78057
+    - path: src/load_data.py
+      hash: md5
+      md5: 15d3c61eadef21fe67f4183e407766c0
+      size: 249
+    outs:
+    - path: data/processedtrain_test_data.csv
+      hash: md5
+      md5: 1bf27115ca1b562b4af5aee84fe0e39d
+      size: 71826
+  preprocess:
+    cmd: poetry run python src/preprocess_data.py data/processedtrain_test_data.csv
+      data/processedX_train.csv data/processedX_test.csv data/processedy_train.csv
+      data/processedy_test.csv
+    deps:
+    - path: data/processedtrain_test_data.csv
+      hash: md5
+      md5: 1bf27115ca1b562b4af5aee84fe0e39d
+      size: 71826
+    - path: src/preprocess_data.py
+      hash: md5
+      md5: 67d36b160b6d3e4d7d225b35b3a85615
+      size: 1086
+    outs:
+    - path: data/processedX_test.csv
+      hash: md5
+      md5: 2eb3ad9febe058c921d0f1815458d740
+      size: 54310
+    - path: data/processedX_train.csv
+      hash: md5
+      md5: fbd80765adc2edf3ed17f2f3e73906ba
+      size: 216761
+    - path: data/processedy_test.csv
+      hash: md5
+      md5: 60609a11dbd88d354a4fbe569cd7ead4
+      size: 466
+    - path: data/processedy_train.csv
+      hash: md5
+      md5: 534614cadf41c7bb634f3062738923a7
+      size: 1836
+  train:
+    cmd: poetry run python src/train.py data/processedX_train.csv data/processedy_train.csv
+      models/model.pkl
+    deps:
+    - path: data/processedX_train.csv
+      hash: md5
+      md5: fbd80765adc2edf3ed17f2f3e73906ba
+      size: 216761
+    - path: data/processedy_train.csv
+      hash: md5
+      md5: 534614cadf41c7bb634f3062738923a7
+      size: 1836
+    - path: src/train.py
+      hash: md5
+      md5: ac94a7ed853eb82d57a0819c97af4bef
+      size: 542
+    outs:
+    - path: models/model.pkl
+      hash: md5
+      md5: 1f32f725357f9e6f6cee8b66152f3b46
+      size: 1815
+  evaluate:
+    cmd: poetry run python src/evaluate.py models/model.pkl data/processedX_test.csv
+      data/processedy_test.csv
+    deps:
+    - path: data/processedX_test.csv
+      hash: md5
+      md5: 2eb3ad9febe058c921d0f1815458d740
+      size: 54310
+    - path: data/processedy_test.csv
+      hash: md5
+      md5: 60609a11dbd88d354a4fbe569cd7ead4
+      size: 466
+    - path: models/model.pkl
+      hash: md5
+      md5: 1f32f725357f9e6f6cee8b66152f3b46
+      size: 1815
+    - path: src/evaluate.py
+      hash: md5
+      md5: 41dd65c05a12f9872921f65eb81a73dd
+      size: 600
